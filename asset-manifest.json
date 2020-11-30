@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/twitch-dashboard/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/twitch-dashboard/static/js/main.95688cba.chunk.js",
-    "main.js.map": "/twitch-dashboard/static/js/main.95688cba.chunk.js.map",
-    "runtime-main.js": "/twitch-dashboard/static/js/runtime-main.6db7f75f.js",
-    "runtime-main.js.map": "/twitch-dashboard/static/js/runtime-main.6db7f75f.js.map",
-    "static/js/2.be914269.chunk.js": "/twitch-dashboard/static/js/2.be914269.chunk.js",
-    "static/js/2.be914269.chunk.js.map": "/twitch-dashboard/static/js/2.be914269.chunk.js.map",
-    "static/js/3.c2229bcb.chunk.js": "/twitch-dashboard/static/js/3.c2229bcb.chunk.js",
-    "static/js/3.c2229bcb.chunk.js.map": "/twitch-dashboard/static/js/3.c2229bcb.chunk.js.map",
-    "index.html": "/twitch-dashboard/index.html",
-    "static/css/main.8c8b27cf.chunk.css.map": "/twitch-dashboard/static/css/main.8c8b27cf.chunk.css.map",
-    "static/js/2.be914269.chunk.js.LICENSE.txt": "/twitch-dashboard/static/js/2.be914269.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/twitch-dashboard/static/media/logo.6ce24c58.svg"
+    "main.css": "/Twitch-Dashboard/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/Twitch-Dashboard/static/js/main.95688cba.chunk.js",
+    "main.js.map": "/Twitch-Dashboard/static/js/main.95688cba.chunk.js.map",
+    "runtime-main.js": "/Twitch-Dashboard/static/js/runtime-main.fa0829cf.js",
+    "runtime-main.js.map": "/Twitch-Dashboard/static/js/runtime-main.fa0829cf.js.map",
+    "static/js/2.be914269.chunk.js": "/Twitch-Dashboard/static/js/2.be914269.chunk.js",
+    "static/js/2.be914269.chunk.js.map": "/Twitch-Dashboard/static/js/2.be914269.chunk.js.map",
+    "static/js/3.c2229bcb.chunk.js": "/Twitch-Dashboard/static/js/3.c2229bcb.chunk.js",
+    "static/js/3.c2229bcb.chunk.js.map": "/Twitch-Dashboard/static/js/3.c2229bcb.chunk.js.map",
+    "index.html": "/Twitch-Dashboard/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/Twitch-Dashboard/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.be914269.chunk.js.LICENSE.txt": "/Twitch-Dashboard/static/js/2.be914269.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/Twitch-Dashboard/static/media/logo.6ce24c58.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.6db7f75f.js",
+    "static/js/runtime-main.fa0829cf.js",
     "static/js/2.be914269.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
     "static/js/main.95688cba.chunk.js"
