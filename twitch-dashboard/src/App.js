@@ -32,11 +32,22 @@ const lexographicSort = (a, b) => a.localeCompare(b);
 function App() {
   const [channel, setChannel] = useState('LindseyRooney'); 
   const [ workingChannel, setWorkingChannel] = useState('LindseyRooney');
-  const [ lastChatters, setLastChatters ] = useState({}); 
+  const [ lastChatters, setLastChatters ] = useState(new Set()); 
   const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(true);
+
+  const flattenAndPurgeLastChatters = (chatters = {}) => {
+    const lastChattersSet = Object.keys(chatters).reduce((lastChattersFlattened, section) => {
+      const chattersInSection = chatters[section] || [];
+      chattersInSection.forEach((chatter) => {
+        lastChattersFlattened.add(chatter);
+      });
+      return lastChattersFlattened;
+    }, new Set());
+    setLastChatters(lastChattersSet);
+  }
   
-  const { status, data, error, refetch } = useQuery(['chatters', channel], () => {
-    setLastChatters(data ? data.chatters : {});
+  const { data, refetch } = useQuery(['chatters', channel], () => {
+    flattenAndPurgeLastChatters(data ? data.chatters : {});
     return fetchJsonp(`https://tmi.twitch.tv/group/user/${channel.toLowerCase()}/chatters`).then(res => {
       return res.json();
     }).then((json) => {
@@ -50,6 +61,7 @@ function App() {
 
   const commitChannelChange = () => {
     setChannel(workingChannel);
+    setLastChatters(new Set());
   }
 
   const toggleAutoRefresh = () => {
@@ -87,15 +99,8 @@ function App() {
       return null;
     }
 
-    const lastInSection = lastChatters[key] || [];
-    const lastInSectionMap = lastInSection.reduce((dictionary, account) => {
-      return {...dictionary,
-        [account]: account
-      };
-    }, {});
-
     const {newViewers, currentViewers} = inSection.reduce((partitions, account) => {
-      const isNew = !lastInSectionMap[account];
+      const isNew = lastChatters.size > 0 && !lastChatters.has(account);
 
       if (isNew) {
         return {
@@ -113,11 +118,20 @@ function App() {
       currentViewers: []
     });
 
+    const isLargeViewersSection = key === "viewers" && currentViewers.length > 100;
+
+    // Hide empty sections
+    if (newViewers.length === 0  && (currentViewers.length === 0 || isLargeViewersSection)) {
+      return null;
+    }
+
     newViewers.sort(lexographicSort);
     currentViewers.sort(lexographicSort);
 
     const newViewersMapped = newViewers.map((account) => mapToListItem(account, true));
-    const currentViewersMapped = currentViewers.map((account) => mapToListItem(account, false));
+    const currentViewersMapped = !isLargeViewersSection ? 
+      currentViewers.map((account) => mapToListItem(account, false)) :
+      [];
 
     return [
       (<ListSubheader key={display} style={{backgroundColor: "white"}}>{display}</ListSubheader>),
@@ -155,7 +169,6 @@ function App() {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={12}><Divider /></Grid>
           <Grid item xs={8}>
             <FormControlLabel
               control={
@@ -181,17 +194,22 @@ function App() {
               Refresh Now
             </Button>
           </Grid>
+          <Grid item xs={12}><Divider /></Grid>
           <Grid item xs={12}>
             <Typography variant="h6">
               Channel Members ({count})
             </Typography>
-            <div>
-              <List dense>
-                {renderListSection(CHAT_SECTIONS_TO_SHOW['vips'])}
-                {renderListSection(CHAT_SECTIONS_TO_SHOW['viewers'])}
-                {renderListSection(CHAT_SECTIONS_TO_SHOW['moderators'])}
-              </List>
-            </div>
+            <Typography variant="subtitle2">
+              If you have over 100 viewers, only new viewers will be shown. All new users will be shown.
+            </Typography>
+          </Grid>
+          <Grid item xs={12}><Divider /></Grid>
+          <Grid item xs={12}>
+            <List dense>
+              {renderListSection(CHAT_SECTIONS_TO_SHOW['viewers'])}
+              {renderListSection(CHAT_SECTIONS_TO_SHOW['vips'])}
+              {renderListSection(CHAT_SECTIONS_TO_SHOW['moderators'])}
+            </List>
           </Grid>
         </Grid>
       </div>
