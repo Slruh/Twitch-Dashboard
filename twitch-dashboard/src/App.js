@@ -17,8 +17,12 @@ import {
   Typography,
   Menu,
   MenuItem,
-  withStyles
+  withStyles,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import FiberNewIcon from "@material-ui/icons/FiberNew";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -50,19 +54,19 @@ const CHAT_SECTIONS_TO_SHOW = {
 
 const StyledMenu = withStyles({
   paper: {
-    border: '1px solid #d3d4d5',
+    border: "1px solid #d3d4d5",
   },
 })((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
+      vertical: "bottom",
+      horizontal: "center",
     }}
     transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
+      vertical: "top",
+      horizontal: "center",
     }}
     {...props}
   />
@@ -72,12 +76,16 @@ const lexographicSort = (a, b) => a.localeCompare(b);
 
 const menuId = "app-settings";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
   },
-});
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightBold,
+  },
+}));
 
 function App() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -245,18 +253,20 @@ function App() {
               onClose={handleMenuClick}
             >
               <MenuItem>
-              <FormControlLabel
-              control={
-                <Switch
-                  checked={autoRefreshEnabled}
-                  disabled={!channel}
-                  onChange={toggleAutoRefresh}
-                  name="autoRefresh"
-                  color="primary"
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={autoRefreshEnabled}
+                      disabled={!channel}
+                      onChange={toggleAutoRefresh}
+                      name="autoRefresh"
+                      color="primary"
+                    />
+                  }
+                  label={`Auto refresh ${
+                    autoRefreshEnabled ? "enabled" : "disabled"
+                  }`}
                 />
-              }
-              label={`Auto refresh ${autoRefreshEnabled ? 'enabled' : 'disabled'}`}
-            />
               </MenuItem>
               <Divider />
               <MenuItem disabled={!channel} onClick={refetch}>
@@ -273,30 +283,29 @@ function App() {
           alignItems="center"
           justify="center"
           spacing={1}
-          style={{ marginTop: "10px", padding: "10px" }}
+          style={{ padding: "10px" }}
         >
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Twitch Channel"
-              onBlur={commitChannelChange}
-              onChange={onTwitchChannelChange}
-              value={workingChannel}
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6">Channel Members ({count})</Typography>
-            <Typography variant="subtitle2">
-              If you have over 100 viewers, only new viewers will be shown. All
-              new users will be shown.
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="h6">
+                  {channel} Channel Members ({count})
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails style={{display: 'flex', flexDirection: 'column'}}>
+                <TextField
+                  fullWidth
+                  label="Your Twitch Channel"
+                  onBlur={commitChannelChange}
+                  onChange={onTwitchChannelChange}
+                  value={workingChannel}
+                  variant="outlined"
+                />
+                <Typography align="center" variant="body2" style={{marginTop: "15px"}}>
+                  If you have over 100 viewers, only new viewers will be shown. 
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Grid>
           <Grid item xs={12}>
             <List dense>
