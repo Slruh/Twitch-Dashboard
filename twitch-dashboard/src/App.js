@@ -1,6 +1,6 @@
 import {
   AppBar,
-  Button,
+  CircularProgress,
   Divider,
   FormControlLabel,
   Grid,
@@ -21,6 +21,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  LinearProgress,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -116,7 +117,7 @@ function App() {
     setLastChatters(lastChattersSet);
   };
 
-  const { data, refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ["chatters", channel],
     () => {
       flattenAndPurgeLastChatters(data ? data.chatters : {});
@@ -155,7 +156,7 @@ function App() {
       <ListItem key={account}>
         {isNew && (
           <ListItemIcon>
-            <FiberNewIcon />
+            <FiberNewIcon color="primary" />
           </ListItemIcon>
         )}
         <ListItemText primary={account} />
@@ -277,6 +278,7 @@ function App() {
               </MenuItem>
             </StyledMenu>
           </Toolbar>
+          { isLoading && <LinearProgress variant="query" />}
         </AppBar>
         <Grid
           container
@@ -301,7 +303,7 @@ function App() {
                   value={workingChannel}
                   variant="outlined"
                 />
-                <Typography align="center" variant="body2" style={{marginTop: "15px"}}>
+                <Typography align="center" variant="caption" style={{marginTop: "15px"}}>
                   If you have over 100 viewers, only new viewers will be shown. 
                 </Typography>
               </AccordionDetails>
